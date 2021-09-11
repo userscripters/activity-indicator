@@ -120,19 +120,44 @@
         return items;
     };
     class ParticipationInfo {
-        constructor(questionComments, answerComments, answers, questions) {
+        constructor(userId, questionComments, answerComments, answers, questions) {
+            this.userId = userId;
             this.questionComments = questionComments;
             this.answerComments = answerComments;
             this.answers = answers;
             this.questions = questions;
         }
+        get myAnswers() {
+            const { answers, userId } = this;
+            return answers.filter(({ owner }) => (owner === null || owner === void 0 ? void 0 : owner.user_id) === userId);
+        }
+        get myQuestions() {
+            const { questions, userId } = this;
+            return questions.filter(({ owner }) => (owner === null || owner === void 0 ? void 0 : owner.user_id) === userId);
+        }
+        get editedAnswers() {
+            const { answers, userId } = this;
+            return answers.filter(({ last_editor }) => (last_editor === null || last_editor === void 0 ? void 0 : last_editor.user_id) === userId);
+        }
+        get editedQuestions() {
+            const { questions, userId } = this;
+            return questions.filter(({ last_editor }) => (last_editor === null || last_editor === void 0 ? void 0 : last_editor.user_id) === userId);
+        }
         get hasAnswers() {
-            const { answers } = this;
-            return !!answers.length;
+            const { myAnswers } = this;
+            return !!myAnswers.length;
         }
         get hasQuestions() {
-            const { questions } = this;
-            return !!questions.length;
+            const { myQuestions } = this;
+            return !!myQuestions.length;
+        }
+        get hasEditedAnswers() {
+            const { editedAnswers } = this;
+            return !!editedAnswers.length;
+        }
+        get hasEditedQuestions() {
+            const { editedQuestions } = this;
+            return !!editedQuestions.length;
         }
         get hasQuestionComments() {
             const { questionComments } = this;
@@ -151,6 +176,8 @@
         const activityMap = [
             [info.hasAnswers, "A"],
             [info.hasQuestions, "Q"],
+            [info.hasEditedAnswers, "EA"],
+            [info.hasEditedQuestions, "EQ"],
             [info.hasAnswerComments, "AC"],
             [info.hasQuestionComments, "QC"],
         ];
@@ -198,10 +225,7 @@
             const myAnswerComments = answerComments
                 .flat()
                 .filter(commentFilter);
-            const postFilter = ({ last_editor, owner }) => [last_editor === null || last_editor === void 0 ? void 0 : last_editor.user_id, owner === null || owner === void 0 ? void 0 : owner.user_id].includes(userId);
-            const myAnswers = answers.filter(postFilter);
-            const myQuestions = questions.filter(postFilter);
-            const info = new ParticipationInfo(myQuestionComments, myAnswerComments, myAnswers, myQuestions);
+            const info = new ParticipationInfo(userId, myQuestionComments, myAnswerComments, answers, questions);
             console.debug(info);
             addParticipationInfo(info);
         }

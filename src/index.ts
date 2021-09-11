@@ -222,20 +222,55 @@ type GetQuestionsOptions = CommonOptions;
 
     class ParticipationInfo {
         constructor(
+            public userId: number,
             public questionComments: UserComment[],
             public answerComments: UserComment[],
             public answers: Answer[],
             public questions: Question[]
         ) {}
 
+        get myAnswers() {
+            const { answers, userId } = this;
+            return answers.filter(({ owner }) => owner?.user_id === userId);
+        }
+
+        get myQuestions() {
+            const { questions, userId } = this;
+            return questions.filter(({ owner }) => owner?.user_id === userId);
+        }
+
+        get editedAnswers() {
+            const { answers, userId } = this;
+            return answers.filter(
+                ({ last_editor }) => last_editor?.user_id === userId
+            );
+        }
+
+        get editedQuestions() {
+            const { questions, userId } = this;
+            return questions.filter(
+                ({ last_editor }) => last_editor?.user_id === userId
+            );
+        }
+
         get hasAnswers() {
-            const { answers } = this;
-            return !!answers.length;
+            const { myAnswers } = this;
+            return !!myAnswers.length;
         }
 
         get hasQuestions() {
-            const { questions } = this;
-            return !!questions.length;
+            const { myQuestions } = this;
+            return !!myQuestions.length;
+        }
+
+        get hasEditedAnswers() {
+            const { editedAnswers } = this;
+            return !!editedAnswers.length;
+        }
+
+        get hasEditedQuestions() {
+            const { editedQuestions } = this;
+            return !!editedQuestions.length;
         }
 
         get hasQuestionComments() {
@@ -263,6 +298,8 @@ type GetQuestionsOptions = CommonOptions;
         const activityMap: [participated: boolean, label: string][] = [
             [info.hasAnswers, "A"],
             [info.hasQuestions, "Q"],
+            [info.hasEditedAnswers, "EA"],
+            [info.hasEditedQuestions, "EQ"],
             [info.hasAnswerComments, "AC"],
             [info.hasQuestionComments, "QC"],
         ];
@@ -327,17 +364,12 @@ type GetQuestionsOptions = CommonOptions;
                 .flat()
                 .filter(commentFilter);
 
-            const postFilter = ({ last_editor, owner }: Answer | Question) =>
-                [last_editor?.user_id, owner?.user_id].includes(userId);
-
-            const myAnswers = answers.filter(postFilter);
-            const myQuestions = questions.filter(postFilter);
-
             const info = new ParticipationInfo(
+                userId,
                 myQuestionComments,
                 myAnswerComments,
-                myAnswers,
-                myQuestions
+                answers,
+                questions
             );
 
             console.debug(info);

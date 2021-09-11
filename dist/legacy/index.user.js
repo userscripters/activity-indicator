@@ -249,24 +249,85 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
         });
     }); };
     var ParticipationInfo = (function () {
-        function ParticipationInfo(questionComments, answerComments, answers, questions) {
+        function ParticipationInfo(userId, questionComments, answerComments, answers, questions) {
+            this.userId = userId;
             this.questionComments = questionComments;
             this.answerComments = answerComments;
             this.answers = answers;
             this.questions = questions;
         }
+        Object.defineProperty(ParticipationInfo.prototype, "myAnswers", {
+            get: function () {
+                var _a = this, answers = _a.answers, userId = _a.userId;
+                return answers.filter(function (_a) {
+                    var owner = _a.owner;
+                    return (owner === null || owner === void 0 ? void 0 : owner.user_id) === userId;
+                });
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ParticipationInfo.prototype, "myQuestions", {
+            get: function () {
+                var _a = this, questions = _a.questions, userId = _a.userId;
+                return questions.filter(function (_a) {
+                    var owner = _a.owner;
+                    return (owner === null || owner === void 0 ? void 0 : owner.user_id) === userId;
+                });
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ParticipationInfo.prototype, "editedAnswers", {
+            get: function () {
+                var _a = this, answers = _a.answers, userId = _a.userId;
+                return answers.filter(function (_a) {
+                    var last_editor = _a.last_editor;
+                    return (last_editor === null || last_editor === void 0 ? void 0 : last_editor.user_id) === userId;
+                });
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ParticipationInfo.prototype, "editedQuestions", {
+            get: function () {
+                var _a = this, questions = _a.questions, userId = _a.userId;
+                return questions.filter(function (_a) {
+                    var last_editor = _a.last_editor;
+                    return (last_editor === null || last_editor === void 0 ? void 0 : last_editor.user_id) === userId;
+                });
+            },
+            enumerable: false,
+            configurable: true
+        });
         Object.defineProperty(ParticipationInfo.prototype, "hasAnswers", {
             get: function () {
-                var answers = this.answers;
-                return !!answers.length;
+                var myAnswers = this.myAnswers;
+                return !!myAnswers.length;
             },
             enumerable: false,
             configurable: true
         });
         Object.defineProperty(ParticipationInfo.prototype, "hasQuestions", {
             get: function () {
-                var questions = this.questions;
-                return !!questions.length;
+                var myQuestions = this.myQuestions;
+                return !!myQuestions.length;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ParticipationInfo.prototype, "hasEditedAnswers", {
+            get: function () {
+                var editedAnswers = this.editedAnswers;
+                return !!editedAnswers.length;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ParticipationInfo.prototype, "hasEditedQuestions", {
+            get: function () {
+                var editedQuestions = this.editedQuestions;
+                return !!editedQuestions.length;
             },
             enumerable: false,
             configurable: true
@@ -297,6 +358,8 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
         var activityMap = [
             [info.hasAnswers, "A"],
             [info.hasQuestions, "Q"],
+            [info.hasEditedAnswers, "EA"],
+            [info.hasEditedQuestions, "EQ"],
             [info.hasAnswerComments, "AC"],
             [info.hasQuestionComments, "QC"],
         ];
@@ -319,7 +382,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
         statsRow.append(item);
     };
     w.addEventListener("load", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var userId_1, questionId, site, commonOpts_1, questionComments, questions, answers, answerCommentsPromises, answerComments, commentFilter, myQuestionComments, myAnswerComments, postFilter, myAnswers, myQuestions, info, error_1;
+        var userId_1, questionId, site, commonOpts_1, questionComments, questions, answers, answerCommentsPromises, answerComments, commentFilter, myQuestionComments, myAnswerComments, info, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -354,13 +417,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                     myAnswerComments = answerComments
                         .flat()
                         .filter(commentFilter);
-                    postFilter = function (_a) {
-                        var last_editor = _a.last_editor, owner = _a.owner;
-                        return [last_editor === null || last_editor === void 0 ? void 0 : last_editor.user_id, owner === null || owner === void 0 ? void 0 : owner.user_id].includes(userId_1);
-                    };
-                    myAnswers = answers.filter(postFilter);
-                    myQuestions = questions.filter(postFilter);
-                    info = new ParticipationInfo(myQuestionComments, myAnswerComments, myAnswers, myQuestions);
+                    info = new ParticipationInfo(userId_1, myQuestionComments, myAnswerComments, answers, questions);
                     console.debug(info);
                     addParticipationInfo(info);
                     return [3, 6];
