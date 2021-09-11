@@ -6,7 +6,7 @@
 | Name | @userscripters/activity-indicator |
 | Description | Adds a user activity indicator to posts |
 | License | [GPL-3.0-or-later](https://spdx.org/licenses/GPL-3.0-or-later) |
-| Version | 0.1.0 |
+| Version | 1.0.0 |
 
 # Support
 

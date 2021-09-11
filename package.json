@@ -1,6 +1,6 @@
 {
     "name": "@userscripters/activity-indicator",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "Adds a user activity indicator to posts",
     "scripts": {
         "test": "mocha",
