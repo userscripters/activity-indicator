@@ -1,19 +1,18 @@
 // ==UserScript==
-// @author           Jane Doe <jane@doe.com>
-// @contributors     John Doe <john@doe.com>
-// @description      template repository for userscripters' projects
-// @grant            none
-// @homepage         https://github.com/userscripters/template#readme
-// @match            https://*.askubuntu.com/*
-// @match            https://*.mathoverflow.net/*
-// @match            https://*.serverfault.com/*
-// @match            https://*.stackapps.com/*
-// @match            https://*.stackexchange.com/*
-// @match            https://*.stackoverflow.com/*
-// @name             template
-// @namespace        userscripters
-// @run-at           document-start
-// @source           git+https://github.com/userscripters/template.git
-// @supportURL       https://github.com/userscripters/template/issues
-// @version          1.0.0
+// @author          Oleg Valter <oleg.a.valter@gmail.com>
+// @description     Adds a user activity indicator to posts
+// @grant           none
+// @homepage        https://github.com/userscripters/activity-indicator#readme
+// @match           https://*.askubuntu.com/*
+// @match           https://*.mathoverflow.net/*
+// @match           https://*.serverfault.com/*
+// @match           https://*.stackapps.com/*
+// @match           https://*.stackexchange.com/*
+// @match           https://*.stackoverflow.com/*
+// @name            Activity Indicator
+// @namespace       userscripters
+// @run-at          document-start
+// @source          git+https://github.com/userscripters/activity-indicator.git
+// @supportURL      https://github.com/userscripters/activity-indicator/issues
+// @version         0.1.0
 // ==/UserScript==
