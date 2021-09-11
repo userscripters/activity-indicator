@@ -14,7 +14,7 @@
 // @run-at          document-start
 // @source          git+https://github.com/userscripters/activity-indicator.git
 // @supportURL      https://github.com/userscripters/activity-indicator/issues
-// @version         1.1.0
+// @version         1.1.1
 // ==/UserScript==
 
 "use strict";
@@ -195,10 +195,9 @@
     };
     w.addEventListener("load", async () => {
         try {
-            const SE = (typeof GM !== "undefined" ? unsafeWindow : w)
-                .StackExchange;
-            const { userId } = SE.options.user;
-            const questionId = SE.question.getQuestionId();
+            const { StackExchange } = typeof unsafeWindow !== "undefined" ? unsafeWindow : w;
+            const { userId } = StackExchange.options.user;
+            const questionId = StackExchange.question.getQuestionId();
             if (!questionId || !userId)
                 return;
             const site = getSiteName(l);

@@ -327,11 +327,11 @@ interface Window {
 
     w.addEventListener("load", async () => {
         try {
-            const SE = (typeof GM !== "undefined" ? unsafeWindow : w)
-                .StackExchange;
+            const { StackExchange } =
+                typeof unsafeWindow !== "undefined" ? unsafeWindow : w;
 
-            const { userId } = SE.options.user;
-            const questionId = SE.question.getQuestionId();
+            const { userId } = StackExchange.options.user;
+            const questionId = StackExchange.question.getQuestionId();
             if (!questionId || !userId) return;
 
             const site = getSiteName(l);

@@ -14,7 +14,7 @@
 // @run-at          document-start
 // @source          git+https://github.com/userscripters/activity-indicator.git
 // @supportURL      https://github.com/userscripters/activity-indicator/issues
-// @version         1.1.0
+// @version         1.1.1
 // ==/UserScript==
 
 "use strict";
@@ -382,15 +382,14 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
         statsRow.append(item);
     };
     w.addEventListener("load", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var SE, userId_1, questionId, site, commonOpts_1, questionComments, questions, answers, answerCommentsPromises, answerComments, commentFilter, myQuestionComments, myAnswerComments, info, error_1;
+        var StackExchange_1, userId_1, questionId, site, commonOpts_1, questionComments, questions, answers, answerCommentsPromises, answerComments, commentFilter, myQuestionComments, myAnswerComments, info, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 5, , 6]);
-                    SE = (typeof GM !== "undefined" ? unsafeWindow : w)
-                        .StackExchange;
-                    userId_1 = SE.options.user.userId;
-                    questionId = SE.question.getQuestionId();
+                    StackExchange_1 = (typeof unsafeWindow !== "undefined" ? unsafeWindow : w).StackExchange;
+                    userId_1 = StackExchange_1.options.user.userId;
+                    questionId = StackExchange_1.question.getQuestionId();
                     if (!questionId || !userId_1)
                         return [2];
                     site = getSiteName(l);
