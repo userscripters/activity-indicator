@@ -382,13 +382,15 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
         statsRow.append(item);
     };
     w.addEventListener("load", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var userId_1, questionId, site, commonOpts_1, questionComments, questions, answers, answerCommentsPromises, answerComments, commentFilter, myQuestionComments, myAnswerComments, info, error_1;
+        var SE, userId_1, questionId, site, commonOpts_1, questionComments, questions, answers, answerCommentsPromises, answerComments, commentFilter, myQuestionComments, myAnswerComments, info, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 5, , 6]);
-                    userId_1 = StackExchange.options.user.userId;
-                    questionId = StackExchange.question.getQuestionId();
+                    SE = (typeof GM !== "undefined" ? unsafeWindow : w)
+                        .StackExchange;
+                    userId_1 = SE.options.user.userId;
+                    questionId = SE.question.getQuestionId();
                     if (!questionId || !userId_1)
                         return [2];
                     site = getSiteName(l);

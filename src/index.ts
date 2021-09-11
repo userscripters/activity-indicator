@@ -34,6 +34,10 @@ type GetAnswerCommentsOptions = CommonOptions;
 type GetQuestionAnswersOptions = CommonOptions;
 type GetQuestionsOptions = CommonOptions;
 
+interface Window {
+    StackExchange: typeof StackExchange;
+}
+
 ((w, d, _s, l) => {
     const API_BASE = "https://api.stackexchange.com";
     const API_VER = 2.3;
@@ -323,8 +327,11 @@ type GetQuestionsOptions = CommonOptions;
 
     w.addEventListener("load", async () => {
         try {
-            const { userId } = StackExchange.options.user;
-            const questionId = StackExchange.question.getQuestionId();
+            const SE = (typeof GM !== "undefined" ? unsafeWindow : w)
+                .StackExchange;
+
+            const { userId } = SE.options.user;
+            const questionId = SE.question.getQuestionId();
             if (!questionId || !userId) return;
 
             const site = getSiteName(l);

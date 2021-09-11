@@ -195,8 +195,10 @@
     };
     w.addEventListener("load", async () => {
         try {
-            const { userId } = StackExchange.options.user;
-            const questionId = StackExchange.question.getQuestionId();
+            const SE = (typeof GM !== "undefined" ? unsafeWindow : w)
+                .StackExchange;
+            const { userId } = SE.options.user;
+            const questionId = SE.question.getQuestionId();
             if (!questionId || !userId)
                 return;
             const site = getSiteName(l);
