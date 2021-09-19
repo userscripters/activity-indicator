@@ -1,25 +1,4 @@
-type ShallowUser = {
-    user_id: number;
-};
-
-type UserComment = {
-    post_id: number;
-    comment_id: number;
-    owner?: ShallowUser;
-    reply_to_user?: ShallowUser;
-};
-
-type Answer = {
-    owner?: ShallowUser;
-    last_editor?: ShallowUser;
-    answer_id: number;
-};
-
-type Question = {
-    owner?: ShallowUser;
-    last_editor?: ShallowUser;
-    question_id: number;
-};
+import type API_TYPES from "@userscripters/stackexchange-api-types";
 
 type CommonOptions = {
     site?: string;
@@ -34,8 +13,10 @@ type GetAnswerCommentsOptions = CommonOptions;
 type GetQuestionAnswersOptions = CommonOptions;
 type GetQuestionsOptions = CommonOptions;
 
-interface Window {
-    StackExchange: typeof StackExchange;
+declare global {
+    interface Window {
+        StackExchange: typeof StackExchange;
+    }
 }
 
 ((w, d, _s, l) => {
@@ -62,12 +43,12 @@ interface Window {
      * @summary gets question comments from the API
      * @param {number} id question id
      * @param {GetQuestionCommentsOptons} [options] request configuration
-     * @returns {Promise<UserComment[]>}
+     * @returns {Promise<API_TYPES.Comment[]>}
      */
     const getQuestionComments = async (
         id: number,
         { site = "stackoverflow", page = 1, ...rest }: GetQuestionCommentsOptons
-    ): Promise<UserComment[]> => {
+    ): Promise<API_TYPES.Comment[]> => {
         const url = new URL(`${API_BASE}/${API_VER}/questions/${id}/comments`);
         url.search = new URLSearchParams({
             site,
@@ -104,12 +85,12 @@ interface Window {
      * @summary gets answer comments from the API
      * @param {number} id answer id
      * @param {GetAnswerCommentsOptions} [options] request configuration
-     * @returns {Promise<UserComment[]>}
+     * @returns {Promise<API_TYPES.Comment[]>}
      */
     const getAnswerComments = async (
         id: number,
         { site = "stackoverflow", page = 1, ...rest }: GetAnswerCommentsOptions
-    ): Promise<UserComment[]> => {
+    ): Promise<API_TYPES.Comment[]> => {
         const url = new URL(`${API_BASE}/${API_VER}/answers/${id}/comments`);
         url.search = new URLSearchParams({
             site,
@@ -146,12 +127,12 @@ interface Window {
      * @summary gets question info given its id
      * @param {number} id question id
      * @param {GetQuestionAnswersOptions} [options] request configuration
-     * @returns {Promise<Question[]>}
+     * @returns {Promise<API_TYPES.Question[]>}
      */
     const getQuestions = async (
         id: number,
         { site = "stackoverflow", page = 1, ...rest }: GetQuestionsOptions
-    ): Promise<Question[]> => {
+    ): Promise<API_TYPES.Question[]> => {
         const url = new URL(`${API_BASE}/${API_VER}/questions/${id}`);
         url.search = new URLSearchParams({
             site,
@@ -188,12 +169,12 @@ interface Window {
      * @summary gets answers for a given question
      * @param {number} id question id
      * @param {GetQuestionAnswersOptions} [options] request configuration
-     * @returns {Promise<Answer[]>}
+     * @returns {Promise<API_TYPES.Answer[]>}
      */
     const getQuestionAnswers = async (
         id: number,
         { site = "stackoverflow", page = 1, ...rest }: GetQuestionAnswersOptions
-    ): Promise<Answer[]> => {
+    ): Promise<API_TYPES.Answer[]> => {
         const url = new URL(`${API_BASE}/${API_VER}/questions/${id}/answers`);
         url.search = new URLSearchParams({
             site,
@@ -227,10 +208,10 @@ interface Window {
     class ParticipationInfo {
         constructor(
             public userId: number,
-            public questionComments: UserComment[],
-            public answerComments: UserComment[],
-            public answers: Answer[],
-            public questions: Question[]
+            public questionComments: API_TYPES.Comment[],
+            public answerComments: API_TYPES.Comment[],
+            public answers: API_TYPES.Answer[],
+            public questions: API_TYPES.Question[]
         ) {}
 
         get myAnswers() {
@@ -362,7 +343,10 @@ interface Window {
 
             const answerComments = await Promise.all(answerCommentsPromises);
 
-            const commentFilter = ({ owner, reply_to_user }: UserComment) =>
+            const commentFilter = ({
+                owner,
+                reply_to_user,
+            }: API_TYPES.Comment) =>
                 [owner?.user_id, reply_to_user?.user_id].includes(userId);
 
             const myQuestionComments = questionComments.filter(commentFilter);
