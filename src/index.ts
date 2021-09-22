@@ -201,6 +201,15 @@ interface Window {
         return items;
     };
 
+    const getLastLink = <T extends { link?: string }>(
+        activities: T[],
+        key: keyof T
+    ) => {
+        let l: T | undefined;
+        activities.forEach((a) => (l?.[key] || 0) < a[key] && (l = a));
+        return l?.link || "";
+    };
+
     class ParticipationInfo {
         constructor(
             public userId: number,
