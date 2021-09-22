@@ -315,13 +315,38 @@ interface Window {
 
         const titleText = "Participated";
 
-        const activityMap: [participated: boolean, label: string][] = [
-            [info.hasAnswers, "A"],
-            [info.hasQuestions, "Q"],
-            [info.hasEditedAnswers, "EA"],
-            [info.hasEditedQuestions, "EQ"],
-            [info.hasAnswerComments, "AC"],
-            [info.hasQuestionComments, "QC"],
+        const activityMap: [
+            participated: boolean,
+            short: string,
+            long: string,
+            link?: string
+        ][] = [
+            [info.hasAnswers, "A", "Answered", info.lastAnswerLink],
+            [info.hasQuestions, "Q", "Asked", info.lastQuestionLink],
+            [
+                info.hasEditedAnswers,
+                "EA",
+                "Edited an Answer",
+                info.lastEditedAnswerLink,
+            ],
+            [
+                info.hasEditedQuestions,
+                "EQ",
+                "Edited the Question",
+                info.lastEditedQuestionLink,
+            ],
+            [
+                info.hasAnswerComments,
+                "AC",
+                "Commented on an Answer",
+                info.lastAnswerComment,
+            ],
+            [
+                info.hasQuestionComments,
+                "QC",
+                "Commented on the Question",
+                info.lastQuestionComment,
+            ],
         ];
 
         const participated = activityMap.filter(([cond]) => cond);
