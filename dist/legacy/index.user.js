@@ -248,6 +248,11 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
             }
         });
     }); };
+    var getLastLink = function (activities, key) {
+        var l;
+        activities.forEach(function (a) { return ((l === null || l === void 0 ? void 0 : l[key]) || 0) < a[key] && (l = a); });
+        return (l === null || l === void 0 ? void 0 : l.link) || "";
+    };
     var ParticipationInfo = (function () {
         function ParticipationInfo(userId, questionComments, answerComments, answers, questions) {
             this.userId = userId;
@@ -256,6 +261,54 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
             this.answers = answers;
             this.questions = questions;
         }
+        Object.defineProperty(ParticipationInfo.prototype, "lastEditedAnswerLink", {
+            get: function () {
+                var editedAnswers = this.editedAnswers;
+                return getLastLink(editedAnswers, "last_activity_date");
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ParticipationInfo.prototype, "lastEditedQuestionLink", {
+            get: function () {
+                var editedQuestions = this.editedQuestions;
+                return getLastLink(editedQuestions, "last_activity_date");
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ParticipationInfo.prototype, "lastAnswerLink", {
+            get: function () {
+                var myAnswers = this.myAnswers;
+                return getLastLink(myAnswers, "creation_date");
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ParticipationInfo.prototype, "lastQuestionLink", {
+            get: function () {
+                var myQuestions = this.myQuestions;
+                return getLastLink(myQuestions, "creation_date");
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ParticipationInfo.prototype, "lastAnswerComment", {
+            get: function () {
+                var answerComments = this.answerComments;
+                return getLastLink(answerComments, "creation_date");
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ParticipationInfo.prototype, "lastQuestionComment", {
+            get: function () {
+                var questionComments = this.questionComments;
+                return getLastLink(questionComments, "creation_date");
+            },
+            enumerable: false,
+            configurable: true
+        });
         Object.defineProperty(ParticipationInfo.prototype, "myAnswers", {
             get: function () {
                 var _a = this, answers = _a.answers, userId = _a.userId;
@@ -356,29 +409,60 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
             return;
         var titleText = "Participated";
         var activityMap = [
-            [info.hasAnswers, "A"],
-            [info.hasQuestions, "Q"],
-            [info.hasEditedAnswers, "EA"],
-            [info.hasEditedQuestions, "EQ"],
-            [info.hasAnswerComments, "AC"],
-            [info.hasQuestionComments, "QC"],
+            [info.hasAnswers, "A", "Answered", info.lastAnswerLink],
+            [info.hasQuestions, "Q", "Asked", info.lastQuestionLink],
+            [
+                info.hasEditedAnswers,
+                "EA",
+                "Edited an Answer",
+                info.lastEditedAnswerLink,
+            ],
+            [
+                info.hasEditedQuestions,
+                "EQ",
+                "Edited the Question",
+                info.lastEditedQuestionLink,
+            ],
+            [
+                info.hasAnswerComments,
+                "AC",
+                "Commented on an Answer",
+                info.lastAnswerComment,
+            ],
+            [
+                info.hasQuestionComments,
+                "QC",
+                "Commented on the Question",
+                info.lastQuestionComment,
+            ],
         ];
         var participated = activityMap.filter(function (_a) {
             var _b = __read(_a, 1), cond = _b[0];
             return cond;
         });
+        var infoNodes = participated.map(function (_a) {
+            var _b = __read(_a, 4), short = _b[1], long = _b[2], url = _b[3];
+            var link = d.createElement("a");
+            link.title = long;
+            link.textContent = short;
+            link.classList.add("mr4");
+            link.href = url || "#!";
+            return link;
+        });
         var infoText = participated.map(function (_a) {
-            var _b = __read(_a, 2), l = _b[1];
-            return l;
+            var _b = __read(_a, 2), s = _b[1];
+            return s;
         }).join(" ") || "no";
+        if (!infoNodes.length)
+            infoNodes.push(d.createTextNode("no"));
         var item = d.createElement("div");
         item.classList.add("flex--item", "ws-nowrap", "mb8", "ml16");
         item.title = titleText + ": " + infoText;
         var title = d.createElement("span");
-        title.classList.add("fc-light", "mr2");
+        title.classList.add("fc-light", "mr4");
         title.textContent = titleText;
         item.append(title);
-        title.after(" " + infoText + " ");
+        title.after.apply(title, __spreadArray([], __read(infoNodes), false));
         statsRow.append(item);
     };
     w.addEventListener("load", function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -394,18 +478,18 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                         return [2];
                     site = getSiteName(l);
                     commonOpts_1 = { site: site, key: "UKKfmybQ9USA0N80jdnU8w((" };
-                    return [4, getQuestionComments(questionId, __assign(__assign({}, commonOpts_1), { filter: "!--OzlnfZUU0r" }))];
+                    return [4, getQuestionComments(questionId, __assign(__assign({}, commonOpts_1), { filter: "!4(lY7*xuE9Z8LL)8k" }))];
                 case 1:
                     questionComments = _a.sent();
-                    return [4, getQuestions(questionId, __assign(__assign({}, commonOpts_1), { filter: "!4(sMnI809OE6Z2KE)" }))];
+                    return [4, getQuestions(questionId, __assign(__assign({}, commonOpts_1), { filter: "!)riR70zjunod1jgz8OB8" }))];
                 case 2:
                     questions = _a.sent();
-                    return [4, getQuestionAnswers(questionId, __assign(__assign({}, commonOpts_1), { filter: "!ao-)ijIL.2UJgN" }))];
+                    return [4, getQuestionAnswers(questionId, __assign(__assign({}, commonOpts_1), { filter: "!)qTDdy3rflMDTMhEvVdZ" }))];
                 case 3:
                     answers = _a.sent();
                     answerCommentsPromises = answers.map(function (_a) {
                         var answer_id = _a.answer_id;
-                        return getAnswerComments(answer_id, __assign(__assign({}, commonOpts_1), { filter: "!--OzlnfZUU0r" }));
+                        return getAnswerComments(answer_id, __assign(__assign({}, commonOpts_1), { filter: "!4(lY7*xuE9Z8LL)8k" }));
                     });
                     return [4, Promise.all(answerCommentsPromises)];
                 case 4:

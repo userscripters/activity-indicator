@@ -119,6 +119,11 @@
         }
         return items;
     };
+    const getLastLink = (activities, key) => {
+        let l;
+        activities.forEach((a) => ((l === null || l === void 0 ? void 0 : l[key]) || 0) < a[key] && (l = a));
+        return (l === null || l === void 0 ? void 0 : l.link) || "";
+    };
     class ParticipationInfo {
         constructor(userId, questionComments, answerComments, answers, questions) {
             this.userId = userId;
@@ -126,6 +131,30 @@
             this.answerComments = answerComments;
             this.answers = answers;
             this.questions = questions;
+        }
+        get lastEditedAnswerLink() {
+            const { editedAnswers } = this;
+            return getLastLink(editedAnswers, "last_activity_date");
+        }
+        get lastEditedQuestionLink() {
+            const { editedQuestions } = this;
+            return getLastLink(editedQuestions, "last_activity_date");
+        }
+        get lastAnswerLink() {
+            const { myAnswers } = this;
+            return getLastLink(myAnswers, "creation_date");
+        }
+        get lastQuestionLink() {
+            const { myQuestions } = this;
+            return getLastLink(myQuestions, "creation_date");
+        }
+        get lastAnswerComment() {
+            const { answerComments } = this;
+            return getLastLink(answerComments, "creation_date");
+        }
+        get lastQuestionComment() {
+            const { questionComments } = this;
+            return getLastLink(questionComments, "creation_date");
         }
         get myAnswers() {
             const { answers, userId } = this;
@@ -174,23 +203,53 @@
             return;
         const titleText = "Participated";
         const activityMap = [
-            [info.hasAnswers, "A"],
-            [info.hasQuestions, "Q"],
-            [info.hasEditedAnswers, "EA"],
-            [info.hasEditedQuestions, "EQ"],
-            [info.hasAnswerComments, "AC"],
-            [info.hasQuestionComments, "QC"],
+            [info.hasAnswers, "A", "Answered", info.lastAnswerLink],
+            [info.hasQuestions, "Q", "Asked", info.lastQuestionLink],
+            [
+                info.hasEditedAnswers,
+                "EA",
+                "Edited an Answer",
+                info.lastEditedAnswerLink,
+            ],
+            [
+                info.hasEditedQuestions,
+                "EQ",
+                "Edited the Question",
+                info.lastEditedQuestionLink,
+            ],
+            [
+                info.hasAnswerComments,
+                "AC",
+                "Commented on an Answer",
+                info.lastAnswerComment,
+            ],
+            [
+                info.hasQuestionComments,
+                "QC",
+                "Commented on the Question",
+                info.lastQuestionComment,
+            ],
         ];
         const participated = activityMap.filter(([cond]) => cond);
-        const infoText = participated.map(([, l]) => l).join(" ") || "no";
+        const infoNodes = participated.map(([, short, long, url]) => {
+            const link = d.createElement("a");
+            link.title = long;
+            link.textContent = short;
+            link.classList.add("mr4");
+            link.href = url || "#!";
+            return link;
+        });
+        const infoText = participated.map(([, s]) => s).join(" ") || "no";
+        if (!infoNodes.length)
+            infoNodes.push(d.createTextNode("no"));
         const item = d.createElement("div");
         item.classList.add("flex--item", "ws-nowrap", "mb8", "ml16");
         item.title = `${titleText}: ${infoText}`;
         const title = d.createElement("span");
-        title.classList.add("fc-light", "mr2");
+        title.classList.add("fc-light", "mr4");
         title.textContent = titleText;
         item.append(title);
-        title.after(` ${infoText} `);
+        title.after(...infoNodes);
         statsRow.append(item);
     };
     w.addEventListener("load", async () => {
@@ -204,24 +263,24 @@
             const commonOpts = { site, key: "UKKfmybQ9USA0N80jdnU8w((" };
             const questionComments = await getQuestionComments(questionId, {
                 ...commonOpts,
-                filter: "!--OzlnfZUU0r",
+                filter: "!4(lY7*xuE9Z8LL)8k",
             });
             const questions = await getQuestions(questionId, {
                 ...commonOpts,
-                filter: "!4(sMnI809OE6Z2KE)",
+                filter: "!)riR70zjunod1jgz8OB8",
             });
             const answers = await getQuestionAnswers(questionId, {
                 ...commonOpts,
-                filter: "!ao-)ijIL.2UJgN",
+                filter: "!)qTDdy3rflMDTMhEvVdZ",
             });
             const answerCommentsPromises = answers.map(({ answer_id }) => {
                 return getAnswerComments(answer_id, {
                     ...commonOpts,
-                    filter: "!--OzlnfZUU0r",
+                    filter: "!4(lY7*xuE9Z8LL)8k",
                 });
             });
             const answerComments = await Promise.all(answerCommentsPromises);
-            const commentFilter = ({ owner, reply_to_user }) => [owner === null || owner === void 0 ? void 0 : owner.user_id, reply_to_user === null || reply_to_user === void 0 ? void 0 : reply_to_user.user_id].includes(userId);
+            const commentFilter = ({ owner, reply_to_user, }) => [owner === null || owner === void 0 ? void 0 : owner.user_id, reply_to_user === null || reply_to_user === void 0 ? void 0 : reply_to_user.user_id].includes(userId);
             const myQuestionComments = questionComments.filter(commentFilter);
             const myAnswerComments = answerComments
                 .flat()
