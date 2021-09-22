@@ -213,11 +213,41 @@ interface Window {
     class ParticipationInfo {
         constructor(
             public userId: number,
-            public questionComments: API_TYPES.Comment[],
-            public answerComments: API_TYPES.Comment[],
-            public answers: API_TYPES.Answer[],
-            public questions: API_TYPES.Question[]
+            public questionComments: StackExchangeAPI.Comment[],
+            public answerComments: StackExchangeAPI.Comment[],
+            public answers: StackExchangeAPI.Answer[],
+            public questions: StackExchangeAPI.Question[]
         ) {}
+
+        get lastEditedAnswerLink() {
+            const { editedAnswers } = this;
+            return getLastLink(editedAnswers, "last_activity_date");
+        }
+
+        get lastEditedQuestionLink() {
+            const { editedQuestions } = this;
+            return getLastLink(editedQuestions, "last_activity_date");
+        }
+
+        get lastAnswerLink() {
+            const { myAnswers } = this;
+            return getLastLink(myAnswers, "creation_date");
+        }
+
+        get lastQuestionLink() {
+            const { myQuestions } = this;
+            return getLastLink(myQuestions, "creation_date");
+        }
+
+        get lastAnswerComment() {
+            const { answerComments } = this;
+            return getLastLink(answerComments, "creation_date");
+        }
+
+        get lastQuestionComment() {
+            const { questionComments } = this;
+            return getLastLink(questionComments, "creation_date");
+        }
 
         get myAnswers() {
             const { answers, userId } = this;
