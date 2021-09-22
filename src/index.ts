@@ -1,5 +1,3 @@
-import type API_TYPES from "@userscripters/stackexchange-api-types";
-
 type CommonOptions = {
     site?: string;
     page?: number;
@@ -13,10 +11,8 @@ type GetAnswerCommentsOptions = CommonOptions;
 type GetQuestionAnswersOptions = CommonOptions;
 type GetQuestionsOptions = CommonOptions;
 
-declare global {
-    interface Window {
-        StackExchange: typeof StackExchange;
-    }
+interface Window {
+    StackExchange: typeof StackExchange;
 }
 
 ((w, d, _s, l) => {
@@ -48,7 +44,7 @@ declare global {
     const getQuestionComments = async (
         id: number,
         { site = "stackoverflow", page = 1, ...rest }: GetQuestionCommentsOptons
-    ): Promise<API_TYPES.Comment[]> => {
+    ): Promise<StackExchangeAPI.Comment[]> => {
         const url = new URL(`${API_BASE}/${API_VER}/questions/${id}/comments`);
         url.search = new URLSearchParams({
             site,
@@ -85,12 +81,12 @@ declare global {
      * @summary gets answer comments from the API
      * @param {number} id answer id
      * @param {GetAnswerCommentsOptions} [options] request configuration
-     * @returns {Promise<API_TYPES.Comment[]>}
+     * @returns {Promise<StackExchangeAPI.Comment[]>}
      */
     const getAnswerComments = async (
         id: number,
         { site = "stackoverflow", page = 1, ...rest }: GetAnswerCommentsOptions
-    ): Promise<API_TYPES.Comment[]> => {
+    ): Promise<StackExchangeAPI.Comment[]> => {
         const url = new URL(`${API_BASE}/${API_VER}/answers/${id}/comments`);
         url.search = new URLSearchParams({
             site,
@@ -127,12 +123,12 @@ declare global {
      * @summary gets question info given its id
      * @param {number} id question id
      * @param {GetQuestionAnswersOptions} [options] request configuration
-     * @returns {Promise<API_TYPES.Question[]>}
+     * @returns {Promise<StackExchangeAPI.Question[]>}
      */
     const getQuestions = async (
         id: number,
         { site = "stackoverflow", page = 1, ...rest }: GetQuestionsOptions
-    ): Promise<API_TYPES.Question[]> => {
+    ): Promise<StackExchangeAPI.Question[]> => {
         const url = new URL(`${API_BASE}/${API_VER}/questions/${id}`);
         url.search = new URLSearchParams({
             site,
@@ -169,12 +165,12 @@ declare global {
      * @summary gets answers for a given question
      * @param {number} id question id
      * @param {GetQuestionAnswersOptions} [options] request configuration
-     * @returns {Promise<API_TYPES.Answer[]>}
+     * @returns {Promise<StackExchangeAPI.Answer[]>}
      */
     const getQuestionAnswers = async (
         id: number,
         { site = "stackoverflow", page = 1, ...rest }: GetQuestionAnswersOptions
-    ): Promise<API_TYPES.Answer[]> => {
+    ): Promise<StackExchangeAPI.Answer[]> => {
         const url = new URL(`${API_BASE}/${API_VER}/questions/${id}/answers`);
         url.search = new URLSearchParams({
             site,
@@ -346,7 +342,7 @@ declare global {
             const commentFilter = ({
                 owner,
                 reply_to_user,
-            }: API_TYPES.Comment) =>
+            }: StackExchangeAPI.Comment) =>
                 [owner?.user_id, reply_to_user?.user_id].includes(userId);
 
             const myQuestionComments = questionComments.filter(commentFilter);

@@ -6,7 +6,8 @@
         "checkJs": true,
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "target": "es2019",
-        "module": "CommonJS",
+        "module": "none",
+        "esModuleInterop": true,
         "moduleResolution": "node",
         "noUnusedParameters": true,
         "noUnusedLocals": true,
@@ -15,6 +16,7 @@
         "downlevelIteration": true,
         "outDir": "dist",
         "types": [
+            "@userscripters/stackexchange-api-types",
             "@userscripters/stackexchange-global-types",
             "jquery",
             "greasemonkey",
