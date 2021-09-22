@@ -350,18 +350,29 @@ interface Window {
         ];
 
         const participated = activityMap.filter(([cond]) => cond);
-        const infoText = participated.map(([, l]) => l).join(" ") || "no";
+        const infoNodes: Node[] = participated.map(([, short, long, url]) => {
+            const link = d.createElement("a");
+            link.title = long;
+            link.textContent = short;
+            link.classList.add("mr4");
+            link.href = url || "#!";
+            return link;
+        });
+
+        const infoText = participated.map(([, s]) => s).join(" ") || "no";
+
+        if (!infoNodes.length) infoNodes.push(d.createTextNode("no"));
 
         const item = d.createElement("div");
         item.classList.add("flex--item", "ws-nowrap", "mb8", "ml16");
         item.title = `${titleText}: ${infoText}`;
 
         const title = d.createElement("span");
-        title.classList.add("fc-light", "mr2");
+        title.classList.add("fc-light", "mr4");
         title.textContent = titleText;
 
         item.append(title);
-        title.after(` ${infoText} `);
+        title.after(...infoNodes);
 
         statsRow.append(item);
     };
