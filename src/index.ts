@@ -386,12 +386,12 @@ interface Window {
 
             const questions = await getQuestions(questionId, {
                 ...commonOpts,
-                filter: "!4(sMnI809OE6Z2KE)",
+                filter: "!)riR70zjunod1jgz8OB8",
             });
 
             const answers = await getQuestionAnswers(questionId, {
                 ...commonOpts,
-                filter: "!3uwOg-2vGinFl3KJc",
+                filter: "!)qTDdy3rflMDTMhEvVdZ",
             });
 
             const answerCommentsPromises = answers.map(({ answer_id }) => {
