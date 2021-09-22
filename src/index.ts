@@ -397,7 +397,7 @@ interface Window {
 
             const questions = await getQuestions(questionId, {
                 ...commonOpts,
-                filter: "!)riR70zjunod1jgz8OB8",
+                filter: "!LaSREm6B5Ji4nnR50YM1t4",
             });
 
             const answers = await getQuestionAnswers(questionId, {
@@ -434,7 +434,7 @@ interface Window {
                 questions
             );
 
-            console.debug(info);
+            console.debug(ParticipationInfo.name, info);
 
             addParticipationInfo(info);
         } catch (error) {

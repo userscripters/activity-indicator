@@ -481,7 +481,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                     return [4, getQuestionComments(questionId, __assign(__assign({}, commonOpts_1), { filter: "!4(lY7*xuE9Z8LL)8k" }))];
                 case 1:
                     questionComments = _a.sent();
-                    return [4, getQuestions(questionId, __assign(__assign({}, commonOpts_1), { filter: "!)riR70zjunod1jgz8OB8" }))];
+                    return [4, getQuestions(questionId, __assign(__assign({}, commonOpts_1), { filter: "!LaSREm6B5Ji4nnR50YM1t4" }))];
                 case 2:
                     questions = _a.sent();
                     return [4, getQuestionAnswers(questionId, __assign(__assign({}, commonOpts_1), { filter: "!)qTDdy3rflMDTMhEvVdZ" }))];
@@ -503,7 +503,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                         .flat()
                         .filter(commentFilter);
                     info = new ParticipationInfo(userId_1, myQuestionComments, myAnswerComments, answers, questions);
-                    console.debug(info);
+                    console.debug(ParticipationInfo.name, info);
                     addParticipationInfo(info);
                     return [3, 6];
                 case 5:
