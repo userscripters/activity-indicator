@@ -317,7 +317,7 @@ interface Window {
 
             const questionComments = await getQuestionComments(questionId, {
                 ...commonOpts,
-                filter: "!--OzlnfZUU0r",
+                filter: "!4(lY7*xuE9Z8LL)8k",
             });
 
             const questions = await getQuestions(questionId, {
@@ -327,13 +327,13 @@ interface Window {
 
             const answers = await getQuestionAnswers(questionId, {
                 ...commonOpts,
-                filter: "!ao-)ijIL.2UJgN",
+                filter: "!3uwOg-2vGinFl3KJc",
             });
 
             const answerCommentsPromises = answers.map(({ answer_id }) => {
                 return getAnswerComments(answer_id, {
                     ...commonOpts,
-                    filter: "!--OzlnfZUU0r",
+                    filter: "!4(lY7*xuE9Z8LL)8k",
                 });
             });
 
