@@ -14,7 +14,7 @@
 // @run-at          document-start
 // @source          git+https://github.com/userscripters/activity-indicator.git
 // @supportURL      https://github.com/userscripters/activity-indicator/issues
-// @version         1.1.1
+// @version         1.2.0
 // ==/UserScript==
 
 "use strict";
