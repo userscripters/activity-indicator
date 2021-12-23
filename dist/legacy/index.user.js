@@ -3,18 +3,23 @@
 // @description     Adds a user activity indicator to posts
 // @grant           none
 // @homepage        https://github.com/userscripters/activity-indicator#readme
-// @match           https://*.askubuntu.com/*
-// @match           https://*.mathoverflow.net/*
-// @match           https://*.serverfault.com/*
-// @match           https://*.stackapps.com/*
-// @match           https://*.stackexchange.com/*
-// @match           https://*.stackoverflow.com/*
+// @match           https://*.stackexchange.com/questions/*
+// @match           https://askubuntu.com/questions/*
+// @match           https://es.stackoverflow.com/questions/*
+// @match           https://ja.stackoverflow.com/questions/*
+// @match           https://mathoverflow.net/questions/*
+// @match           https://pt.stackoverflow.com/questions/*
+// @match           https://ru.stackoverflow.com/questions/*
+// @match           https://serverfault.com/questions/*
+// @match           https://stackapps.com/questions/*
+// @match           https://stackoverflow.com/questions/*
+// @match           https://superuser.com/questions/*
 // @name            Activity Indicator
 // @namespace       userscripters
 // @run-at          document-start
 // @source          git+https://github.com/userscripters/activity-indicator.git
 // @supportURL      https://github.com/userscripters/activity-indicator/issues
-// @version         1.2.0
+// @version         1.2.1
 // ==/UserScript==
 
 "use strict";
@@ -118,7 +123,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
         return __generator(this, function (_l) {
             switch (_l.label) {
                 case 0:
-                    url = new URL(API_BASE + "/" + API_VER + "/questions/" + id + "/comments");
+                    url = new URL("".concat(API_BASE, "/").concat(API_VER, "/questions/").concat(id, "/comments"));
                     url.search = new URLSearchParams(__assign({ site: site, page: page.toString() }, rest)).toString();
                     return [4, fetch(url.toString())];
                 case 1:
@@ -152,7 +157,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
         return __generator(this, function (_l) {
             switch (_l.label) {
                 case 0:
-                    url = new URL(API_BASE + "/" + API_VER + "/answers/" + id + "/comments");
+                    url = new URL("".concat(API_BASE, "/").concat(API_VER, "/answers/").concat(id, "/comments"));
                     url.search = new URLSearchParams(__assign({ site: site, page: page.toString() }, rest)).toString();
                     return [4, fetch(url.toString())];
                 case 1:
@@ -186,7 +191,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
         return __generator(this, function (_l) {
             switch (_l.label) {
                 case 0:
-                    url = new URL(API_BASE + "/" + API_VER + "/questions/" + id);
+                    url = new URL("".concat(API_BASE, "/").concat(API_VER, "/questions/").concat(id));
                     url.search = new URLSearchParams(__assign({ site: site, page: page.toString() }, rest)).toString();
                     return [4, fetch(url.toString())];
                 case 1:
@@ -220,7 +225,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
         return __generator(this, function (_l) {
             switch (_l.label) {
                 case 0:
-                    url = new URL(API_BASE + "/" + API_VER + "/questions/" + id + "/answers");
+                    url = new URL("".concat(API_BASE, "/").concat(API_VER, "/questions/").concat(id, "/answers"));
                     url.search = new URLSearchParams(__assign({ site: site, page: page.toString() }, rest)).toString();
                     return [4, fetch(url.toString())];
                 case 1:
@@ -457,7 +462,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
             infoNodes.push(d.createTextNode("no"));
         var item = d.createElement("div");
         item.classList.add("flex--item", "ws-nowrap", "mb8", "ml16");
-        item.title = titleText + ": " + infoText;
+        item.title = "".concat(titleText, ": ").concat(infoText);
         var title = d.createElement("span");
         title.classList.add("fc-light", "mr4");
         title.textContent = titleText;
@@ -508,7 +513,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                     return [3, 6];
                 case 5:
                     error_1 = _a.sent();
-                    console.debug("Activity Indicator error:\n" + error_1);
+                    console.debug("Activity Indicator error:\n".concat(error_1));
                     return [3, 6];
                 case 6: return [2];
             }
