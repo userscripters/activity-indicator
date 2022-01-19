@@ -5,7 +5,7 @@ output=$dist"/headers.js"
 
 generate tampermonkey \
     -o $output \
-    -m all https://domain/questions/* \
+    -m all meta https://domain/questions/* \
     --collapse \
     --pretty
 
